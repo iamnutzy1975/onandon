@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My first Vue app</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+  <div id="app">
+      <ul>
+          <li v-for="stock in stocks">
+            {{ stock.symbol }} {{ stock.price }} {{ stock.name }}
+          </li>
+      </ul>
+  </div>
+
+  <script>
+    var requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+    };
+
+    var app = new Vue({
+      el: '#app',
+      data: {
+        stocks: []
+      },
+      created () {
+        fetch("https://financialmodelingprep.com/api/v3/quote/BNS,FCX?apikey=e5931fa72585b49328e09a166d06eb29", requestOptions)
+          .then(response => response.json())
+          .then(json => {
+            this.stocks = json
+          })
+      }
+    })
+  </script>
+</body>
+</html>
