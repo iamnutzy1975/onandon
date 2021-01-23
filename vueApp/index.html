@@ -5,14 +5,14 @@
   <script src="https://unpkg.com/vue"></script>
 </head>
 <body>
-  <div id="app">
+  <div id="stock_app">
       <ul>
           <li v-for="stock in stocks">
-            {{ stock.symbol }} {{ stock.price }} {{ stock.name }}
+            {{ stock.symbol }} <input type="number" v-model.number="stock.price"> <span style="background:red" v-if="stock.price > 200">OVERVALUED</span> {{ stock.name }}
           </li>
       </ul>
+      <h2>Sum prices:{{ totalPrice }} </h2>
   </div>
-
   <script>
     var requestOptions = {
       method: 'GET',
@@ -20,16 +20,24 @@
     };
 
     var app = new Vue({
-      el: '#app',
+      el: '#stock_app',
       data: {
         stocks: []
       },
+      computed: {
+        totalPrice () {
+            return this.stocks.reduce((avg, stock) => {
+              return avg + stock.price
+            }, 0)
+        }
+      },
       created () {
-        fetch("https://financialmodelingprep.com/api/v3/quote/BNS,FCX?apikey=e5931fa72585b49328e09a166d06eb29", requestOptions)
+        fetch("https://financialmodelingprep.com/api/v3/quote/FB,FDX,BNS,FCX?apikey=e5931fa72585b49328e09a166d06eb29", requestOptions)
           .then(response => response.json())
           .then(json => {
             this.stocks = json
           })
+          .catch(error => console.log('error', error));
       }
     })
   </script>
