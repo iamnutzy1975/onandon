@@ -15,13 +15,15 @@
             variantId: 2234,
             variantColor: "green",
             variantImage: './assets/vmSocks-green-onWhite.jpg',
-            variantQuantity: 0
+            variantQuantity: 0,
+            variantOnSale: true
         },
                 {
             variantId: 2235,
             variantColor: "blue",
             variantImage: './assets/vmSocks-blue-onWhite.jpg',
-            variantQuantity: 10
+            variantQuantity: 10,
+            variantOnSale: false
         }
         ],
       cart: 0
@@ -55,7 +57,7 @@
             return this.variants[this.selectedVariant].variantImage
         },
         sale() {
-            if (this.onSale) {
+            if (this.variants[this.selectedVariant].variantOnSale) {
                 return this.title + ' are on sale!'
             }
             return this.title + ' are NOT on sale!'
