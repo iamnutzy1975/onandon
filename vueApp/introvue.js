@@ -1,5 +1,16 @@
 //Create a new component for product-details with a prop of details.
-
+Vue.component('product-review', {
+template: `
+<input v-model="name">
+`,
+data() {
+return {
+name: null,
+review: null,
+rating: null
+}}
+}
+)
 Vue.component('product-details', {
   props: {
     details: {
@@ -50,13 +61,11 @@ Vue.component('product', {
             >
           Add to cart
           </button>
-
-          <div class="cart">
-            <p>Cart({{ cart }})</p>
-          </div>
-
-       </div>
-
+            <button @click="removeFromCart"
+              >
+            Remove from cart
+            </button>
+      </div>
     </div>
    `,
   data() {
@@ -78,16 +87,18 @@ Vue.component('product', {
             variantImage: 'https://www.vuemastery.com/images/challenges/vmSocks-blue-onWhite.jpg',
             variantQuantity: 0
           }
-        ],
-        cart: 0
+        ]
     }
   },
     methods: {
       addToCart: function() {
-          this.cart += 1
+          this.$emit('add-to-cart',this.variants[this.selectedVariant].variantId, true)
       },
       updateProduct: function(index) {
           this.selectedVariant = index
+      },
+      removeFromCart: function() {
+        this.$emit('add-to-cart',this.variants[this.selectedVariant].variantId, false)
       }
     },
     computed: {
@@ -112,6 +123,19 @@ Vue.component('product', {
 var app = new Vue({
     el: '#app',
     data: {
-      premium: true
+      premium: true,
+      cart: []
+    },
+    methods: {
+      updateCart(id,push) {
+          if (push) {
+          this.cart.push(id)
+          }
+          else {
+          this.cart.pop(id)
+          }
+
+      },
+
     }
 })
