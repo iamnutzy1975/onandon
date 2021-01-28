@@ -5,7 +5,15 @@ Vue.component('product-tabs',{
     reviews: {
         type: Array,
         required: true
-      }
+      },
+    details: {
+        type: Array,
+        required: true
+    },
+    shipping: {
+        type: String,
+        required: true
+    }
     },
     template: `
     <div>
@@ -27,12 +35,22 @@ Vue.component('product-tabs',{
           </div>
 
          <product-review v-show="selectedTab === 'Submit a Review'" ></product-review>
+         <div v-show="selectedTab === 'Shipping'">
+         <p>Shipping: {{ shipping }}</p>
+         </div>
+         <div v-show="selectedTab === 'Details'">
+              <p v-if="!details.length">There are no product details yet.</p>
+              <ul v-else>
+                <ul>
+                  <li v-for="detail in details">{{ detail }}</li>
+                </ul>
+         </div>
 
     </div>
     `,
     data() {
         return {
-            tabs: ['Reviews', 'Submit a Review'],
+            tabs: ['Reviews', 'Submit a Review','Shipping','Details'],
             selectedTab: 'Reviews'
         }
     }
@@ -57,11 +75,7 @@ Vue.component('product', {
             <h1>{{ product }}</h1>
             <p v-if="inStock">In Stock</p>
             <p v-else>Out of Stock</p>
-            <p>Shipping: {{ shipping }}</p>
 
-            <ul>
-              <li v-for="detail in details">{{ detail }}</li>
-            </ul>
 
             <div class="color-box"
                  v-for="(variant, index) in variants"
@@ -79,7 +93,7 @@ Vue.component('product', {
             </button>
 
          </div>
-         <product-tabs :reviews="reviews"></product-tabs>
+         <product-tabs :reviews="reviews" :details="details" :shipping="shipping"></product-tabs>
       </div>
      `,
     data() {
